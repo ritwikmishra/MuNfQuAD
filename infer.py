@@ -184,23 +184,18 @@ if __name__ == '__main__':
     print('Preparing input')
     text_list = []
     for para_i,para in tqdm(enumerate(context.split('\n')), total=len(context.split('\n')), ncols=100):
-        # text_list.append(question+' '+para)
+        text_list.append(question+' '+para)
         # here we are simply concatenating the question with each paragraph
         # it can be modified to include previous para till the token limit is reached
         # the code for that is as follows
-        prior_context_paras = context.split('\n')[:para_i]
-        target_text = question + ' ' + para
-        for ppi,_ in enumerate(prior_context_paras):
-            try:
-                if len(model.tokenizer(question+' '.join(prior_context_paras[len(prior_context_paras)-ppi-1:])+' '+para)['input_ids']) < model.hyper_params['max_len']:
-                    target_text = question+' '.join(prior_context_paras[len(prior_context_paras)-ppi-1:])+' '+para
-            except:
-                print(question)
-                print(prior_context_paras[len(prior_context_paras)-ppi-1:])
-                exit()
-            else:
-                break
-        text_list.append(target_text)
+        # prior_context_paras = context.split('\n')[:para_i]
+        # target_text = question + ' ' + para
+        # for ppi,_ in enumerate(prior_context_paras):
+        #     if len(model.tokenizer(question+' '.join(prior_context_paras[len(prior_context_paras)-ppi-1:])+' '+para)['input_ids']) < model.hyper_params['max_len']:
+        #         target_text = question+' '.join(prior_context_paras[len(prior_context_paras)-ppi-1:])+' '+para
+        #     else:
+        #         break
+        # text_list.append(target_text)
             
     print('Running inference on',len(text_list),'paragraphs')
     a = time.time()
